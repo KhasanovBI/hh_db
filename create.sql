@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS company (
   name    VARCHAR(100) UNIQUE            NOT NULL,
   user_id INTEGER REFERENCES "user" (id) NOT NULL
 );
+CREATE INDEX company_user_idx
+  ON company (user_id);
 
 
 CREATE TABLE IF NOT EXISTS vacancy (
@@ -25,6 +27,8 @@ CREATE TABLE IF NOT EXISTS vacancy (
   open_time   TIMESTAMP WITH TIME ZONE,
   close_time  TIMESTAMP WITH TIME ZONE
 );
+CREATE INDEX vacancy_company_idx
+  ON vacancy (company_id);
 
 
 CREATE TABLE IF NOT EXISTS resume (
@@ -39,6 +43,8 @@ CREATE TABLE IF NOT EXISTS resume (
   salary_to   INTEGER,
   experience  SMALLINT
 );
+CREATE INDEX resume_user_idx
+  ON resume (user_id);
 
 
 CREATE TABLE IF NOT EXISTS skill (
@@ -77,8 +83,8 @@ CREATE INDEX vacancy_skill_skill_idx
 
 CREATE TABLE IF NOT EXISTS chat (
   id         SERIAL PRIMARY KEY,
-  vacancy_id INT NOT NULL,
-  resume_id  INT NOT NULL,
+  vacancy_id INTEGER NOT NULL,
+  resume_id  INTEGER NOT NULL,
   FOREIGN KEY (vacancy_id) REFERENCES vacancy (id),
   FOREIGN KEY (resume_id) REFERENCES resume (id)
 );
@@ -92,10 +98,14 @@ CREATE INDEX chat_resume_idx
 
 CREATE TABLE IF NOT EXISTS message (
   id      SERIAL PRIMARY KEY,
-  chat_id INT                      NOT NULL,
+  chat_id INTEGER                  NOT NULL,
+  user_id INTEGER                  NOT NULL,
   text    TEXT,
   time    TIMESTAMP WITH TIME ZONE NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES "user" (id),
   FOREIGN KEY (chat_id) REFERENCES chat (id)
 );
 CREATE INDEX message_chat_id_idx
   ON message (chat_id);
+CREATE INDEX message_user_id_idx
+  ON message (user_id);

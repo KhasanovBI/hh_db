@@ -58,8 +58,8 @@ INSERT INTO chat VALUES
   (4, 2, 3);
 
 
-INSERT INTO message (chat_id, text, time) VALUES
-  (1, 'hello work', '2017-01-01 00:00:00'),
-  (2, 'give me a job', '2017-01-02 13:00:00'),
-  (3, 'take this job', '2017-01-02 14:00:00'),
-  (4, 'hi', '2017-01-12 10:00:00');
+INSERT INTO message (chat_id, user_id, text, time) VALUES
+  (1, 2, 'hello work', '2017-01-01 00:00:00'),
+  (2, 3, 'give me a job', '2017-01-02 13:00:00'),
+  (3, 1, 'take this job', '2017-01-02 14:00:00'),
+  (4, 4, 'hi', '2017-01-12 10:00:00');
