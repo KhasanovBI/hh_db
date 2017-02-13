@@ -23,7 +23,8 @@ INSERT INTO skill VALUES
 
 
 INSERT INTO vacancy VALUES
-  (1, 1, 'first company job', 'very long description', NULL, 200000, 3, '2016-01-01 00:00:00', '2017-02-13 12:00:00'),
+  (1, 1, 'first company job', 'very long description', NULL, 200000, 3, '2016-01-01 00:00:00',
+   '2017-02-13 12:00:00'),
   (2, 2, 'second company job', 'very long description', 160000, NULL, NULL, '2017-02-11 00:00:00',
    '2017-02-18 12:00:00'),
   (3, 2, 'second company job', 'very long description', 160000, NULL, NULL, '2016-01-01 00:00:00',
@@ -51,15 +52,15 @@ INSERT INTO resume_skill VALUES
   (3, 1);
 
 
-INSERT INTO chat VALUES
-  (1, 1, 1),
-  (2, 1, 2),
-  (3, 2, 1),
-  (4, 2, 3);
+INSERT INTO response (user_id, vacancy_id, time) VALUES
+  (1, 1, '2017-01-02 14:00:00'),
+  (2, 2, '2017-01-02 14:00:00'),
+  (2, 1, '2017-01-02 14:00:00'),
+  (3, 1, '2017-01-02 14:00:00');
 
 
-INSERT INTO message (chat_id, user_id, text, time) VALUES
-  (1, 2, 'hello work', '2017-01-01 00:00:00'),
-  (2, 3, 'give me a job', '2017-01-02 13:00:00'),
-  (3, 1, 'take this job', '2017-01-02 14:00:00'),
-  (4, 4, 'hi', '2017-01-12 10:00:00');
+INSERT INTO message (vacancy_id, resume_id, user_id, text, time) VALUES
+  (1, 1, 2, 'hello work', '2017-01-01 00:00:00'),
+  (1, 2, 3, 'give me a job', '2017-01-02 13:00:00'),
+  (2, 1, 1, 'take this job', '2017-01-02 14:00:00'),
+  (2, 3, 4, 'hi', '2017-01-12 10:00:00');

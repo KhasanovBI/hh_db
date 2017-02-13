@@ -81,31 +81,34 @@ CREATE INDEX vacancy_skill_skill_idx
   ON vacancy_skill USING BTREE (skill_id);
 
 
-CREATE TABLE IF NOT EXISTS chat (
+CREATE TABLE IF NOT EXISTS response (
   id         SERIAL PRIMARY KEY,
-  vacancy_id INTEGER NOT NULL,
-  resume_id  INTEGER NOT NULL,
-  FOREIGN KEY (vacancy_id) REFERENCES vacancy (id),
-  FOREIGN KEY (resume_id) REFERENCES resume (id)
+  vacancy_id INTEGER                  NOT NULL,
+  user_id    INTEGER                  NOT NULL,
+  time       TIMESTAMP WITH TIME ZONE NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES "user" (id),
+  FOREIGN KEY (vacancy_id) REFERENCES vacancy (id)
 );
-CREATE UNIQUE INDEX chat_vacancy_resume_uniq
-  ON chat (vacancy_id, resume_id);
-CREATE INDEX chat_vacancy_idx
-  ON chat (vacancy_id);
-CREATE INDEX chat_resume_idx
-  ON chat (resume_id);
+CREATE INDEX response_vacancy_id_idx
+  ON response (vacancy_id);
+CREATE INDEX response_user_id_idx
+  ON response (user_id);
 
 
 CREATE TABLE IF NOT EXISTS message (
-  id      SERIAL PRIMARY KEY,
-  chat_id INTEGER                  NOT NULL,
-  user_id INTEGER                  NOT NULL,
-  text    TEXT,
-  time    TIMESTAMP WITH TIME ZONE NOT NULL,
+  id         SERIAL PRIMARY KEY,
+  vacancy_id INTEGER                  NOT NULL,
+  resume_id  INTEGER                  NOT NULL,
+  user_id    INTEGER                  NOT NULL,
+  text       TEXT,
+  time       TIMESTAMP WITH TIME ZONE NOT NULL,
   FOREIGN KEY (user_id) REFERENCES "user" (id),
-  FOREIGN KEY (chat_id) REFERENCES chat (id)
+  FOREIGN KEY (vacancy_id) REFERENCES vacancy (id),
+  FOREIGN KEY (resume_id) REFERENCES resume (id)
 );
-CREATE INDEX message_chat_id_idx
-  ON message (chat_id);
+CREATE INDEX message_vacancy_id_idx
+  ON message (vacancy_id);
+CREATE INDEX message_resume_id_idx
+  ON message (resume_id);
 CREATE INDEX message_user_id_idx
   ON message (user_id);

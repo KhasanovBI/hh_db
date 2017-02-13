@@ -28,8 +28,31 @@ SELECT
 FROM "user" u
   INNER JOIN company c ON u.id = c.user_id
   INNER JOIN vacancy v ON c.id = v.company_id
-  LEFT JOIN chat ch ON v.id = ch.vacancy_id
-  INNER JOIN message m ON v.id = m.chat_id
+  INNER JOIN message m ON v.id = m.vacancy_id
 WHERE v.close_time >= NOW() AND v.open_time < NOW() - INTERVAL '1 week' AND m.user_id != u.id
 GROUP BY v.name, c.name, u.email
 HAVING COUNT(*) = 0;
+
+-- Количество уникальных откликов/приглашений на вакансию - количество пользователей откликнувшихся на вакансию (название должности, название компании, количество уникальных откликов)
+SELECT
+  v.name,
+  c.name,
+  count(r.user_id)
+FROM vacancy v
+  LEFT OUTER JOIN response r
+    ON v.id = r.vacancy_id
+  INNER JOIN company c
+    ON v.company_id = c.id
+GROUP BY v.id, c.id;
+
+-- Среднее количество откликов/приглашений на вакансию у компаний (название компании, количество)
+SELECT
+  c.name,
+  (CASE WHEN COUNT(DISTINCT v.id) = 0
+    THEN 0
+   ELSE CAST(COUNT(r.id) AS REAL) / COUNT(DISTINCT v.id)
+   END) AS average
+FROM company c
+  LEFT JOIN vacancy v ON c.id = v.company_id
+  LEFT JOIN response r ON v.id = r.vacancy_id
+GROUP BY c.id;
